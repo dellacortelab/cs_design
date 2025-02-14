@@ -1,4 +1,4 @@
-# BayesDesign
+# CSDesign
 <img src="https://github.com/jacobastern/cs_design/blob/master/data/figs/title_fig_csd.png?raw=true" alt="drawing" width="700"/>
 
 CSDesign is an algorithm for designing proteins with high conformational specificity.
@@ -29,7 +29,7 @@ python3 -m cs_design.design --model_name cs_design --protein_id 4GSB --protein_i
 ```
 - CSDesign with a spatial mask while preserving all residues within an 8-angstrom radius of fixed positions
 ```
-python3 -m bayes_design.design --model_name cs_design --protein_id 4GSB --protein_id_anti 2ERK --decode_order n_to_c --decode_algorithm greedy --fixed_positions 1 168 187 358 --ball_mask
+python3 -m cs_design.design --model_name cs_design --protein_id 4GSB --protein_id_anti 2ERK --decode_order n_to_c --decode_algorithm greedy --fixed_positions 1 168 187 358 --ball_mask
 ```
 - Generate MotifDiv dataset and run a benchmark
 ```
