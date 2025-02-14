@@ -1,12 +1,12 @@
 [tool.poetry]
-name = "bayes_design"
+name = "cs_design"
 version = "0.1.0"
-description = "A package for Bayesian design in molecular systems"
-authors = ["Your Name <youremail@example.com>"]
+description = "Protein design for conformational specificity"
+authors = ["Jacob Stern"]
 license = "MIT"
 readme = "README.md"
-homepage = "https://github.com/yourusername/bayes_design"
-repository = "https://github.com/yourusername/bayes_design"
+homepage = "https://github.com/jacobastern/cs_design"
+repository = "https://github.com/jacobastern/cs_design"
 
 [tool.poetry.dependencies]
 python = "^3.11.9"
