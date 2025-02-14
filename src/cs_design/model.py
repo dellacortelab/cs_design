@@ -171,7 +171,7 @@ class ProteinMPNNWrapper(nn.Module):
         hidden_dim = 128
         num_layers = 3
         # Assuming the file is in the 'protein_mpnn/vanilla_model_weights' directory inside the package
-        with resources.path('bayes_design.protein_mpnn.vanilla_model_weights', 'v_48_030.pt') as checkpoint_path:
+        with resources.path('cs_design.protein_mpnn.vanilla_model_weights', 'v_48_030.pt') as checkpoint_path:
             checkpoint = torch.load(checkpoint_path, map_location=self.device)
             
         print('Number of edges:', checkpoint['num_edges'])

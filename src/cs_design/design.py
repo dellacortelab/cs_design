@@ -1,13 +1,13 @@
 import argparse
 import torch
 
-from bayes_design.decode import decode_order_dict, decode_algorithm_dict
-from bayes_design.model import model_dict
-from bayes_design.utils import get_protein, get_fixed_position_mask, align_and_crop, get_ball_mask
+from cs_design.decode import decode_order_dict, decode_algorithm_dict
+from cs_design.model import model_dict
+from cs_design.utils import get_protein, get_fixed_position_mask, align_and_crop, get_ball_mask
 
 parser = argparse.ArgumentParser()
 
-parser.add_argument('--model_name', help="The model to use for protein sequence design", choices=list(model_dict.keys()), default='bayes_design')
+parser.add_argument('--model_name', help="The model to use for protein sequence design", choices=list(model_dict.keys()), default='cs_design')
 parser.add_argument('--protein_id', help="The PDB id of the protein to redesign", default='6MRR')
 parser.add_argument('--protein_id_anti', help="The PDB id of a known protein conformation to avoid. Must have same number of residues as the protein correspoding to --protein_id", default=None)
 parser.add_argument('--decode_order', help="The order to decode masked parts of the sequence", choices=list(decode_order_dict.keys()), default='n_to_c')
@@ -27,7 +27,7 @@ def example_design(args):
 
     device = torch.device(f"cuda:{args.device}" if (torch.cuda.is_available()) else "cpu")
     
-    if args.model_name == 'bayes_design':
+    if args.model_name == 'cs_design':
         prob_model = model_dict[args.model_name](device=device, bayes_balance_factor=args.bayes_balance_factor)
     else:
         prob_model = model_dict[args.model_name](device=device)
