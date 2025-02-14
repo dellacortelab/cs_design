@@ -1,0 +1,5 @@
+biopython=1.81
+numpy==1.21.2
+sentencepiece==0.1.96
+transformers==4.20.1
+tokenizers==0.12.1

@@ -1,0 +1,9 @@
+name: cs_design
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11.9
+  - pip
+  - pip:
+    - torch --extra-index-url https://download.pytorch.org/whl/cu116
+    - -e .
