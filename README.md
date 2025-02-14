@@ -1,5 +1,5 @@
 # CSDesign
-<img src="https://github.com/anonymized/cs_design/blob/master/data/figs/title_fig_csd.png?raw=true" alt="drawing" width="700"/>
+<!-- <img src="https://github.com/anonymized/cs_design/blob/master/data/figs/title_fig_csd.png?raw=true" alt="drawing" width="700"/> -->
 
 CSDesign is an algorithm for designing proteins with high conformational specificity.
 
