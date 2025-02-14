@@ -1,11 +1,11 @@
 # CSDesign
-<img src="https://github.com/jacobastern/cs_design/blob/master/data/figs/title_fig_csd.png?raw=true" alt="drawing" width="700"/>
+<img src="https://github.com/anonymized/cs_design/blob/master/data/figs/title_fig_csd.png?raw=true" alt="drawing" width="700"/>
 
 CSDesign is an algorithm for designing proteins with high conformational specificity.
 
 Try out the CSDesign model here:
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jacobastern/cs_design/blob/master/examples/CSDesign.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/anonymized/cs_design/blob/master/examples/CSDesign.ipynb)
 
 ## Requirements
 - micromamba
@@ -14,8 +14,8 @@ Try out the CSDesign model here:
 ```
 # Micromamba install command (run and follow prompts)
 "${SHELL}" <(curl -L micro.mamba.pm/install.sh)
-# Clone BayesDesign repo
-git clone https://github.com/jacobastern/cs_design.git
+# Clone CSDesign repo
+git clone https://github.com/anonymized/cs_design.git
 # Create environment
 cd cs_design
 micromamba env create -f cs_design.yaml
@@ -33,5 +33,5 @@ python3 -m cs_design.design --model_name cs_design --protein_id 4GSB --protein_i
 ```
 - Generate MotifDiv dataset and run a benchmark
 ```
-python3 -m bayes_design.experiments.scrmsd_experiment
+python3 -m cs_design.experiments.scrmsd_experiment
 ````
