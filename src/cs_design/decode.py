@@ -128,8 +128,6 @@ def greedy_decode(prob_model, struct, seq, decode_order, fixed_position_mask, fr
                 current_seq = list(current_seq)
                 current_seq[idx] = aa
                 current_seq = ''.join(current_seq)
-        print("log probs:", log_probs)
-        print("log prob:", np.array(log_probs).sum())
     return current_seq
 
 def sample_decode(prob_model, struct, seq, decode_order, fixed_position_mask, from_scratch):

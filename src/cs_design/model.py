@@ -234,7 +234,7 @@ class ProteinMPNNWrapper(nn.Module):
         # N x 20
 
 class BayesDesign(nn.Module):
-    def __init__(self, device=None, bayes_balance_factor=0.002, **kwargs):
+    def __init__(self, device=None, balance_factor=0.002, **kwargs):
         super().__init__()
         if device is not None:
             self.device = device
@@ -246,15 +246,15 @@ class BayesDesign(nn.Module):
         self.seq_model = XLNetWrapper(device=device, **kwargs)
         self.seq_struct_model = ProteinMPNNWrapper(device=device, **kwargs)
 
-        self.bayes_balance_factor = bayes_balance_factor
+        self.balance_factor = balance_factor
 
     def forward(self, seq, struct, decode_order, token_to_decode, mask_type='bidirectional_autoregressive'):
         p_seq = self.seq_model(seq=seq, decode_order=decode_order, token_to_decode=token_to_decode, mask_type=mask_type).clone()
         p_seq_struct = self.seq_struct_model(seq=seq, struct=struct, decode_order=decode_order, token_to_decode=token_to_decode, mask_type=mask_type).clone()
 
         # Add a "balance factor" so that we don't end up with large probability ratios at the tails of the distributions
-        p_seq += self.bayes_balance_factor
-        p_seq_struct += self.bayes_balance_factor
+        p_seq += self.balance_factor
+        p_seq_struct += self.balance_factor
         balanced_logits = (p_seq_struct / p_seq)
         
         # Normalize probabilities

@@ -16,7 +16,7 @@ parser.add_argument('--fixed_positions', help="The beginnings and ends of residu
 parser.add_argument('--n_beams', help="The number of beams, if using beam search decoding", type=int, default=16)
 parser.add_argument('--redesign', help="Whether to redesign an existing sequence, using the existing sequence as bidirectional context. Default is to design from scratch.", action="store_true")
 parser.add_argument('--device', help="The GPU index to use", type=int, default=0)
-parser.add_argument('--bayes_balance_factor', help='A balancing factor to avoid a high probability ratio in the tails of the distribution. Suggested value: 0.002', default=0.002, type=float)
+parser.add_argument('--balance_factor', help='A balancing factor to avoid a high probability ratio in the tails of the distribution. Suggested value: 0.002', default=0.002, type=float)
 parser.add_argument('--ball_mask', help='Whether to use a ball mask instead of a fixed position mask', action='store_true') 
 subparsers = parser.add_subparsers(help="Whether to run an experiment instead of using the base design functionality")
 experiment_parser = subparsers.add_parser('experiment')
@@ -28,7 +28,7 @@ def example_design(args):
     device = torch.device(f"cuda:{args.device}" if (torch.cuda.is_available()) else "cpu")
     
     if args.model_name == 'cs_design':
-        prob_model = model_dict[args.model_name](device=device, bayes_balance_factor=args.bayes_balance_factor)
+        prob_model = model_dict[args.model_name](device=device, balance_factor=args.balance_factor)
     else:
         prob_model = model_dict[args.model_name](device=device)
 
@@ -40,8 +40,7 @@ def example_design(args):
         assert args.model_name == 'cs_design', "Anti-protein design is only supported for the cs_design model"
         seq_anti, struct_anti, res_ids_anti = get_protein(args.protein_id_anti)
         # Align the two sequences and crop them to the minumum overlapping portion
-        _, _, merged_seq, struct, struct_anti = align_and_crop(seq, seq_anti, struct, struct_anti)
-        struct = (struct, struct_anti)
+        aligned_seq_pro, aligned_seq_anti, merged_seq, struct, struct_anti = align_and_crop(seq, seq_anti, struct, struct_anti)
 
     if args.ball_mask:
         if isinstance(struct, tuple):
@@ -51,6 +50,8 @@ def example_design(args):
     else:
         fixed_position_mask = get_fixed_position_mask(fixed_position_list=args.fixed_positions, res_ids=res_ids)
         
+    masked_seq_pro = ''.join(['-' if not fixed else char for char, fixed in zip(aligned_seq_pro, fixed_position_mask)])
+    masked_seq_anti = ''.join(['-' if not fixed else char for char, fixed in zip(aligned_seq_anti, fixed_position_mask)])
     masked_seq = ''.join(['-' if not fixed else char for char, fixed in zip(merged_seq, fixed_position_mask)])
 
     # Decode order defines the order in which the masked positions are predicted
@@ -63,11 +64,10 @@ def example_design(args):
     
     from_scratch = not args.redesign
     
-    # The decoding algorithm determines how the sequence is decoded
-    if 'beam' in args.decode_algorithm:
-        designed_seq = decode_algorithm_dict[args.decode_algorithm](prob_model=prob_model, struct=struct, seq=merged_seq, decode_order=decode_order, fixed_position_mask=fixed_position_mask, from_scratch=from_scratch, n_beams=args.n_beams)
-    else:
-        designed_seq = decode_algorithm_dict[args.decode_algorithm](prob_model=prob_model, struct=struct, seq=merged_seq, decode_order=decode_order, fixed_position_mask=fixed_position_mask, from_scratch=from_scratch)
+    designed_seq = decode_algorithm_dict[args.decode_algorithm](prob_model=prob_model, struct=(struct, struct_anti), seq=(masked_seq_pro, masked_seq_anti), decode_order=decode_order, fixed_position_mask=fixed_position_mask, from_scratch=from_scratch)
+    if isinstance(designed_seq, tuple): # account for the CSDesign case
+        designed_seq = designed_seq[0]
+        
 
     return {"Original sequence":orig_seq, "Masked sequence (tokens to predict are indicated by a dash)":masked_seq, "Designed sequence":designed_seq}
 
