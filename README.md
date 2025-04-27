@@ -3,6 +3,8 @@
 
 CSDesign is an algorithm for designing proteins with high conformational specificity.
 
+![title_fig_csd (3)-1](https://github.com/user-attachments/assets/5cea7c62-e200-4c68-98e6-71f8cf1fab4c)
+
 ## Requirements
 - micromamba
 
