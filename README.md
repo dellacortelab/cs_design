@@ -19,6 +19,9 @@ cd cs_design
 micromamba env create -f cs_design.yaml
 ```
 
+## Google Colab
+Here is a colab that makes CSDesign easy to run from any computer and has arguments used to generate the sequences in the paper.
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/dellacortelab/cs_design/blob/master/CSDesign_colab.ipynb)
 
 ## Examples
 - Redesign a protein to prefer one conformation (CSDesign)
